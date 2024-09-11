@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require("mongoose");
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -18,6 +20,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+mongoose
+  .connect("mongodb://root:123456@localhost:27017/SIS?authSource=admin")
+  .then(() => {
+    console.log("Connect success");
+  })
+  .catch(() => {
+    console.log("Unconnection");
+  });
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
